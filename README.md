@@ -1,13 +1,4 @@
-# Sample Hardhat Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
+  contractA = 0x80931330A8F49c26BaDb24474272FC263E408003;
+  contractA = 0x3E8978CB20f992330af018353f07CF498c9999BB;
+  contract joeSwap = 0x7580708993de7CA120E957A62f26A5dDD4b3D8aC;
