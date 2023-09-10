@@ -19,6 +19,7 @@ contract JoeSwap is SWAPINTERFACE {
 
     //a mapping of address to its total amounts added to liquidity
     mapping(address => LiquidityProvider) liquidityProvider;
+    mapping(address => bool) liquidityProviderStatus;
 
     //the contract address of tokenA
     IERC20 tokenA;
@@ -27,6 +28,13 @@ contract JoeSwap is SWAPINTERFACE {
 
     //event that emits when liquidity is added;
     event LiquidityAdded(address _liquidityAdder, uint amountA, uint amountB);
+
+    //event that emits when liquidity is removed;
+    event LiquidityRemoved(
+        address _liquidityRemover,
+        uint amountA,
+        uint amountB
+    );
 
     constructor(address _tokenA, address _tokenB) {
         //set the contract address of token A by using the constructor argument
@@ -39,8 +47,7 @@ contract JoeSwap is SWAPINTERFACE {
         uint amountA,
         uint amountB
     ) external returns (bool _success) {
-        require(amountA > 0 && amountB > 0, "Zero Amounts");
-        require();
+        require(amountA > 0 || amountB > 0, "Zero Amounts");
 
         //get the amount of token A set by the provider
         IERC20(tokenA).transferFrom(msg.sender, address(this), amountA);
@@ -57,8 +64,49 @@ contract JoeSwap is SWAPINTERFACE {
         provider.AmountA += amountA;
         provider.AmountB += amountB;
 
+        //this sets that account has added liquidity
+        liquidityProviderStatus[msg.sender] = true;
+
         _success = true;
 
         emit LiquidityAdded(msg.sender, amountA, amountB);
+    }
+
+    function removeLiquidity(
+        uint amountA,
+        uint amountB
+    ) external returns (bool _success) {
+        require(liquidityProviderStatus[msg.sender], "Unknown Provider");
+        require(amountA > 0 || amountB > 0, "Zero Amounts");
+
+        //send back the amount of token A set by the provider
+        if (amountA > 0) {
+            IERC20(tokenA).trasfer(msg.sender, amountA);
+        }
+
+        //send back the amount of token B set by the provider
+        if (amountB > 0) {
+            IERC20(tokenA).trasfer(msg.sender, amountB);
+        }
+
+        //send back the amount of token A set by the provider
+        if (amountA > 0) {
+            //increases total of reserveA by the amount of token A set by the provider
+            reserveA -= amountA;
+        }
+
+        //decrease the total amount of reserveA by the amount of token A set by the provider
+        if (amountB > 0) {
+            //decrease the total amount of reserveB by the amount of token B set by the provider
+            reserveB -= amountB;
+        }
+
+        LiquidityProvider storage provider = liquidityProvider[msg.sender];
+        provider.AmountA -= amountA;
+        provider.AmountB -= amountB;
+
+        _success = true;
+
+        emit LiquidityRemoved(msg.sender, amountA, amountB);
     }
 }
