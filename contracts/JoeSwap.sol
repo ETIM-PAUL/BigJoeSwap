@@ -134,16 +134,16 @@ contract JoeSwap is SwapInterface {
         uint amountB
     ) internal view returns (uint expectedAmount) {
         //formula implementing the x * y = k formula for calculating the return value for A
-        expectedAmount = ((reserveA * (reserveB - amountB)) /
-            (reserveB * (reserveA + (reserveB - amountB))));
+        expectedAmount = (reserveA -
+            ((reserveA * reserveB) / (reserveB + (reserveB - amountB))));
     }
 
     function calculateTokenBReturnsForTokenA(
         uint amountA
     ) internal view returns (uint expectedAmount) {
         //formula implementing the x * y = k formula for calculating the return value for B
-        expectedAmount = ((reserveB * (reserveA - amountA)) /
-            (reserveA * (reserveB + (reserveA - amountA))));
+        expectedAmount = (reserveB -
+            ((reserveA * reserveB) / (reserveA + (reserveA - amountA))));
     }
 
     //get expected amount before swapping Token A for Token B
