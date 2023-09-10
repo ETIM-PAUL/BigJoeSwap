@@ -2,11 +2,11 @@ import { ethers } from "hardhat";
 
 async function main() {
 
-  //deploy token A
+  //deploy token A to coinbase testnet
   const tokenA = await ethers.deployContract("TokenA");
   await tokenA.waitForDeployment();
 
-  //deploy token B
+  //deploy token B to coinbase testnet
   const tokenB = await ethers.deployContract("TokenB");
   await tokenB.waitForDeployment();
 
