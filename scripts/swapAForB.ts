@@ -5,7 +5,7 @@ async function main() {
   const TokenA = "0x80931330A8F49c26BaDb24474272FC263E408003";
   const TokenB = "0x3E8978CB20f992330af018353f07CF498c9999BB"
 
-  const joeSwap = await ethers.getContractAt("SwapInterface", "0x92b474811aC11EbfFdcc21fc240993b46909ae69")
+  const joeSwap = await ethers.getContractAt("SwapInterface", "0x1571f7813E898C4F566f0f9fFdd0ced65301f623")
   const tokenAContract = await ethers.getContractAt('IIERC20', TokenA)
   const tokenBContract = await ethers.getContractAt('IIERC20', TokenB)
 
@@ -20,8 +20,8 @@ async function main() {
   const TokenHolderSign = await ethers.getImpersonatedSigner(TokenHolder);
   
 
-  await tokenAContract.connect(TokenHolderSign).approve("0x92b474811aC11EbfFdcc21fc240993b46909ae69", approveAmount);
-  await tokenBContract.connect(TokenHolderSign).approve("0x92b474811aC11EbfFdcc21fc240993b46909ae69", approveAmount);
+  await tokenAContract.connect(TokenHolderSign).approve("0x1571f7813E898C4F566f0f9fFdd0ced65301f623", approveAmount);
+  await tokenBContract.connect(TokenHolderSign).approve("0x1571f7813E898C4F566f0f9fFdd0ced65301f623", approveAmount);
   await joeSwap.connect(TokenHolderSign).addLiquidity(AmountALiquidity, AmountBLiquidity);
 
 
