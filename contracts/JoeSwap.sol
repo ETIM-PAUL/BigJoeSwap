@@ -69,6 +69,11 @@ contract JoeSwap is SwapInterface {
         require(liquidityProviderStatus[msg.sender], "Unknown Provider");
         require(amountA > 0 || amountB > 0, "Zero Amounts");
 
+        LiquidityProvider storage provider = liquidityProvider[msg.sender];
+
+        require(amountA <= provider.AmountA, "Insufficient TokenA");
+        require(amountB <= provider.AmountB, "Insufficient TokenB");
+
         //send back the amount of token A set by the provider
         if (amountA > 0) {
             IIERC20(tokenA).transfer(msg.sender, amountA);
@@ -91,7 +96,6 @@ contract JoeSwap is SwapInterface {
             reserveB -= amountB;
         }
 
-        LiquidityProvider storage provider = liquidityProvider[msg.sender];
         provider.AmountA -= amountA;
         provider.AmountB -= amountB;
 
